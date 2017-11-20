@@ -55,15 +55,16 @@ class EntryModelTestCase(unittest.TestCase):
     """This tests the creation and use of a Entry."""
     def test_entry_creation(self):
         """This tests if an Entry can be created."""
-        with test_database(TEST_DB, (User,)):
+        with test_database(TEST_DB, (User, Entry)):
             UserModelTestCase.create_users()
             user = User.select().get()
             Entry.create(
-            title='Coding',
-            entry_date='November the twentieth',
-            time_spent='Fifteen minutes',
-            learned='Mocking a database with test_database()',
-            resources='various online things.'
+                user=user,
+                title='Coding',
+                entry_date='November the twentieth',
+                time_spent='Fifteen minutes',
+                learned='Mocking a database with test_database()',
+                resources='various online things.'
             )
             entry = Entry.select().get()
 
@@ -72,49 +73,79 @@ class EntryModelTestCase(unittest.TestCase):
                 1
             )
             self.assertEqual(entry.title, 'Coding')
+            self.assertEqual(entry.user, user)
 
 
 class ViewTestCase(unittest.TestCase):
     """This sets up a class to test the web portion of the site."""
-    def test_registration(self):
-        """This checks if the wording on the site is correct as well as if
-        the user gets sent back to the homepage after registering."""
-        pass
-
-    def test_good_login(self):
-        """This tests a good login."""
-        pass
-
-    def test_bad_login(self):
-        """This tests a bad login."""
-        pass
-
-    def test_logout(self):
-        """This tests if the user can logout."""
-        pass
-
-    def test_logged_in_menu(self):
-        """This tests the wording of the logged_in_menu."""
-        pass
-
-    def test_logged_out_menu(self):
-        """This tests the wording of the logged_out_menu."""
-        pass
+    def setUp(self):
+        flask_journal.app.config['TESTING'] = True
+        flask_journal.app.config['WTF_CSRF_ENABLED'] = False
+        self.app = flask_journal.app.test_client()
 
 
 class UserViewsTestCase(ViewTestCase):
-    """This tests the loggin in and logging out portion of the webpage."""
-    def test_entry_create(self):
-        """This tests an entry creation from the webpage."""
-        pass
+    def test_registration(self):
+        """This checks if the wording on the site is correct as well as if
+        the user gets sent back to the homepage after registering."""
+        data = {
+            'email': 'test@example.com',
+            'password': 'password',
+            'password2': 'password'
+        }
+        with test_database(TEST_DB, (User,)):
+            rv = self.app.post(
+                '/register',
+                data=data)
+            self.assertEqual(rv.status_code, 302)
+            self.assertEqual(rv.location, 'http://localhost/')
 
-    def test_entry_list(self):
-        """This tests the list of Entries for validity."""
+    def test_good_login(self):
+        """This tests a good login."""
+        with test_database(TEST_DB, (User,)):
+            UserModelTestCase.create_users(1)
+            rv = self.app.post('/login', data=USER_DATA)
+            self.assertEqual(rv.status_code, 302)
+            self.assertEqual(rv.location, 'http://localhost/')
+
+    def test_bad_login(self):
+        """This tests a bad login."""
+        with test_database(TEST_DB, (User,)):
+            rv = self.app.post('/login', data=USER_DATA)
+            self.assertEqual(rv.status_code, 200)
+
+    def test_logout(self):
+        """This tests if the user can logout."""
+        with test_database(TEST_DB, (User,)):
+            # Create and login the user
+            UserModelTestCase.create_users(1)
+            self.app.post('/login', data=USER_DATA)
+
+            rv = self.app.get('/logout')
+            self.assertEqual(rv.status_code, 302)
+            self.assertEqual(rv.location, 'http://localhost/')
+
+    def test_logged_in_menu(self):
+        """This tests the wording of the logged_in_menu."""
+        with test_database(TEST_DB, (User,)):
+            UserModelTestCase.create_users(1)
+            self.app.post('/login', data=USER_DATA)
+            rv = self.app.get('/')
+            self.assertIn("new entry", rv.get_data(as_text=True).lower())
+            self.assertIn("logout", rv.get_data(as_text=True).lower())
+
+    def test_logged_out_menu(self):
+        """This tests the wording of the logged_out_menu."""
+        rv = self.app.get('/')
+        self.assertIn("register", rv.get_data(as_text=True).lower())
+        self.assertIn("login", rv.get_data(as_text=True).lower())
 
 
 class EntryViewsTestCase(ViewTestCase):
     """This tests to see if Entries work on the webpage."""
-    pass
+    def test_entry_list(self):
+        """This tests the list of Entries for validity."""
+        pass
 
 
 class EntryEditTestCase(ViewTestCase):

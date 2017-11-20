@@ -32,6 +32,10 @@ class User(UserMixin, Model):
 
 class Entry(Model):
     """This is the model for an entry."""
+    user = ForeignKeyField(
+        rel_model=User,
+        related_name='user'
+    )
     title = CharField()
     entry_date = CharField()
     submit_date = DateTimeField(default=datetime.datetime.now)
@@ -42,3 +46,9 @@ class Entry(Model):
     class Meta:
         databse = DATABASE
         order_by = ('submit_date',)
+
+
+def initialize():
+    DATABASE.connect()
+    DATABASE.create_tables([User, Entry], safe=True)
+    DATABASE.close()
