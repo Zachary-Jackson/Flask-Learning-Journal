@@ -11,7 +11,7 @@ app = Flask(__name__)
 @app.route('/')
 def index():
     """This is the homepage for the Flask Learning Journal"""
-    # current_user is a temporary place holder for loggin in.
+    # current_user is a temporary placeholder for loggin in.
     # That is until I add a way for users to log in.
     return render_template('index.html', current_user=False)
 

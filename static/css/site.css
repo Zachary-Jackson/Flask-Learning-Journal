@@ -5,6 +5,7 @@
    ========================================================================== */
 
 body {
+	background-color: #d4d6d8;
 	font-size: 16px;
 	color: #404a49;
 	font-family: 'Cousine', serif;
@@ -224,17 +225,3 @@ form textarea:hover {
 input[type=submit] {
 	margin-right: 5px;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
