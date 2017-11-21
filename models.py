@@ -45,7 +45,7 @@ class Entry(Model):
 
     class Meta:
         databse = DATABASE
-        order_by = ('submit_date',)
+        order_by = ('-submit_date',)
 
 
 def initialize():

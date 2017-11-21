@@ -16,23 +16,22 @@
                 <div class="site-header">
                     <a class="logo" href="/"><i class="material-icons">library_books</i></a>
                     {% if current_user.is_authenticated() %}
-                      <a class="button icon-right" href="logout"><span>Logout</span></a>
-                      <a class="button icon-right" href="new.html"><span>New Entry</span> <i class="material-icons">add</i></a>
+                      <a class="button icon-right" href="/logout"><span>Logout</span></a>
+                      <a class="button icon-right" href="/new.html"><span>New Entry</span> <i class="material-icons">add</i></a>
+                      <p class="logo">Welcome {{current_user.email}}</p>
                     {% else %}
                       <a class="button icon-right" href="register"><span>Register</span></a>
                       <a class="button icon-right" href="login"><span>Login</span></a>
                     {% endif %}
                 </div>
                 {% with messages=get_flashed_messages() %}
-                {% if messages %}
-                  <div class="mesages">
-                    {% for message in messages %}
-                    <div class="message">
-                      {{ message }}
-                    </div>
-                    {% endfor %}
-                  </div>
-                {% endif %}
+                  {% if messages %}
+                      {% for message in messages %}
+                        <h2>
+                        {{ message }}
+                        </h2>
+                      {% endfor %}
+                  {% endif %}
                 {% endwith %}
             </div>
         </header>

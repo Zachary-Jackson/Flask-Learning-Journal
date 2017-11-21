@@ -1,4 +1,4 @@
-from flask import (Flask, render_template, redirect, url_for, g, flash)
+from flask import (Flask, render_template, redirect, url_for, g, flash, abort)
 from flask.ext.bcrypt import check_password_hash
 from flask.ext.login import (LoginManager, current_user, login_user,
                              logout_user, login_required)
@@ -47,7 +47,8 @@ def after_request(response):
 @app.route('/')
 def index():
     """This is the homepage for the Flask Learning Journal"""
-    return render_template('index.html')
+    entries = models.Entry.select().limit(100)
+    return render_template('index.html', entries=entries)
 
 
 @app.route('/register', methods=('GET', 'POST'))
@@ -110,15 +111,28 @@ def new():
 
 
 @app.route('/detail.html')
-def detail():
+@app.route('/detail.html/<entry_id>')
+def detail(entry_id):
     """This lets a user closely examine an Entry."""
-    return render_template('detail.html')
+    entries = models.Entry.select()
+    # This gets the list of entries switched around. The webpage displays the
+    # entry links by most recent, but the id number is by the least recent.
+    entries = entries[::-1]
+    try:
+        entry = entries[int(entry_id) - 1]
+    except IndexError:
+        abort(404)
+    except ValueError:
+        abort(404)
+    else:
+        return render_template('detail.html', entry=entry)
 
 
 @app.route('/edit.html')
 def edit():
     """This is where the user can edit an Entry."""
-    return render_template('edit.html')
+    form = forms.EntryForm()
+    return render_template('edit.html', form=form)
 
 
 if __name__ == '__main__':
