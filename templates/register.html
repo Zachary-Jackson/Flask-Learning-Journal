@@ -4,22 +4,19 @@
 
 {% block content %}
 
-<form method='POST' action=''>
-  {{ form.hidden_tag() }}
-  <div class="u-full-width">
-    {{ render_field(form.email) }}
-  </div>
-  <div class="row">
-    <div class="six columns">
-      {{ render_field(form.password) }}
+<div class="container">
+    <div class="new-entry">
+        <h2>New Entry</h2>
+          <form method='POST' action=''>
+            {{ form.hidden_tag() }}
+            {{ render_field(form.email) }}
+            {{ render_field(form.password) }}
+            {{ render_field(form.password2) }}
+            <div class="u-full-width">
+              <input type="submit" class="button-primary" value="Register">
+            </div>
+          </form>
     </div>
-    <div class="six columns">
-      {{ render_field(form.password2) }}
-    </div>
-  </div>
-  <div class="u-full-width">
-    <input type="submit" class="button-primary" value="Register">
-  </div>
-</form>
+</div>
 
 {% endblock %}

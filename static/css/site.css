@@ -20,7 +20,7 @@ header .site-header {
 	height: 95px;
 }
 header .logo i {
-	color: #678f89;
+	color: #0e50ba;
 	margin: 20px 0 0 -5px;
 	float: left;
 	font-size: 40px;
@@ -32,9 +32,8 @@ header .button {
 footer {
 	text-align: center;
 	padding: 35px 0;
-	border-top: 2px dotted #678f89;
+	border-top: 2px dotted #0e50ba;
 }
-
 
 
 /* ==========================================================================
@@ -43,8 +42,8 @@ footer {
 
 .button {
 	padding: 8px 10px 6px 10px;
-	background: #678f89;
-	border: 2px solid #678f89;
+	background: #0e50ba;
+	border: 2px solid #0e50ba;
 	border-radius: 4px;
 	text-decoration: none;
 	color: #FFF;
@@ -115,9 +114,9 @@ p {
 	font-size: 18px;
 }
 p a {
-	border-bottom: 2px solid #678f89;
+	border-bottom: 2px solid #0e50ba;
 	padding: 0;
-	color: #678f89;
+	color: #0e50ba;
 	text-decoration: none;
 }
 ul li {
@@ -125,9 +124,9 @@ ul li {
 	font-size: 18px;
 }
 ul li a {
-	border-bottom: 2px solid #678f89;
+	border-bottom: 2px solid #0e50ba;
 	line-height: 1.8em;
-	color: #678f89;
+	color: #0e50ba;
 	text-decoration: none;
 }
 
@@ -211,12 +210,12 @@ form input[type=date]:focus,
 form input[type=password]:focus,
 form textarea:focus {
 	outline: 0;
-	border-color: #678f89;
+	border-color: #0e50ba;
 }
 form input[type=text]:hover,
 form input[type=date]:hover
 form textarea:hover {
-	border-color: #678f89;
+	border-color: #0e50ba;
 }
 .edit-entry form textarea,
 .new-entry form textarea {

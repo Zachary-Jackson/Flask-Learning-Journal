@@ -91,10 +91,22 @@ def logout():
     return redirect(url_for('index'))
 
 
-@app.route('/new.html')
+@app.route('/new.html', methods=('GET', 'POST'))
 def new():
     """This lets the user create a new Entry."""
-    return render_template('new.html')
+    form = forms.EntryForm()
+    if form.validate_on_submit():
+        models.Entry.create(user=g.user.id,
+                            title=form.title.data,
+                            entry_date=form.entry_date.data,
+                            time_spent=form.time_spent.data,
+                            learned=form.learned.data,
+                            resources=form.resources.data
+                            )
+        flash("Your Journal entry has been created.", "success")
+        # temporary placeholder change index for /details
+        return redirect(url_for('index'))
+    return render_template('new.html', form=form)
 
 
 @app.route('/detail.html')

@@ -1,5 +1,5 @@
 from flask_wtf import Form
-from wtforms import StringField, PasswordField
+from wtforms import StringField, PasswordField, DateField
 from wtforms.validators import (DataRequired, Email, ValidationError, Length,
                                 EqualTo)
 
@@ -39,3 +39,12 @@ class LoginForm(Form):
     """This is the form that user's login with."""
     email = StringField('Email', validators=[DataRequired(), Email()])
     password = StringField('Password', validators=[DataRequired()])
+
+
+class EntryForm(Form):
+    """This is the form users can use to add a new entry."""
+    title = StringField('Title', validators=[DataRequired()])
+    entry_date = StringField('Date', validators=[DataRequired()])
+    time_spent = StringField('Time Spent', validators=[DataRequired()])
+    learned = StringField('What I Learned', validators=[DataRequired()])
+    resources = StringField('Resources', validators=[DataRequired()])

@@ -23,6 +23,17 @@
                       <a class="button icon-right" href="login"><span>Login</span></a>
                     {% endif %}
                 </div>
+                {% with messages=get_flashed_messages() %}
+                {% if messages %}
+                  <div class="mesages">
+                    {% for message in messages %}
+                    <div class="message">
+                      {{ message }}
+                    </div>
+                    {% endfor %}
+                  </div>
+                {% endif %}
+                {% endwith %}
             </div>
         </header>
         <section>

@@ -2,18 +2,23 @@
 {% from 'macros.html' import render_field %}
 
 {% block content %}
-<form method='POST' action=''>
-  {{ form.hidden_tag() }}
-  <div class="row">
-    <div class="six columns">
-      {{ render_field(form.email) }}
+<div class="container">
+    <div class="new-entry">
+        <h2>Log In</h2>
+          <form method='POST' action=''>
+            {{ form.hidden_tag() }}
+            <div class="row">
+              <div class="six columns">
+                {{ render_field(form.email) }}
+              </div>
+              <div class="six columns">
+                {{ render_field(form.password) }}
+              </div>
+            </div>
+            <div class="u-full-width">
+              <input type="submit" class="button-primary" value="Login">
+            </div>
+          </form>
     </div>
-    <div class="six columns">
-      {{ render_field(form.password) }}
-    </div>
-  </div>
-  <div class="u-full-width">
-    <input type="submit" class="button-primary" value="Login">
-  </div>
-</form>
+</div>
 {% endblock %}
