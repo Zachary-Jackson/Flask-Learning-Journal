@@ -110,8 +110,8 @@ def new():
     return render_template('new.html', form=form)
 
 
-@app.route('/detail.html')
-@app.route('/detail.html/<entry_id>')
+@app.route('/details.html')
+@app.route('/details.html/<entry_id>')
 def detail(entry_id):
     """This lets a user closely examine an Entry."""
     try:
@@ -150,9 +150,30 @@ def edit(entry_id):
                                 resources=form.resources.data
                                 )
             entry.delete_instance()
+            flash("Your Journal entry has been edited.", "success")
             return redirect(url_for('index'))
         else:
             return render_template('edit.html', entry=entry, form=form)
+
+
+@app.route('/delete/<entry_id>')
+@app.route('/delete/<entry_id>/<confirm>')
+@login_required
+def delete(entry_id, confirm=False):
+    """This allows the user to delete an entry."""
+    try:
+        entry = models.Entry.get(models.Entry.id == entry_id)
+    except IndexError:
+        abort(404)
+    except ValueError:
+        abort(404)
+    else:
+        if confirm:
+            entry.delete_instance()
+            flash("You have deleted your journal entry.", "success")
+            return redirect(url_for('index'))
+        else:
+            return render_template('delete.html', entry_id= entry_id)
 
 
 @app.errorhandler(404)

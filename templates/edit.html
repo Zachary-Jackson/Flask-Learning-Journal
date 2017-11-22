@@ -15,7 +15,7 @@
             {{ render_field(form.resources) }}
             <div class="u-full-width">
             <input type="submit" value="Publish Entry" class="button">
-            <a href="/" class="button button-secondary">Cancel</a>
+            <a href={{"/details.html/{}".format(entry.id)}} class="button button-secondary">Cancel</a>
         </form>
     </div>
 </div>

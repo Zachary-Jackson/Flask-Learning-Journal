@@ -154,8 +154,29 @@ class EntryViewsTestCase(ViewTestCase):
             self.assertIn("time spent", rv.get_data(as_text=True).lower())
 
 
-class EntryEditTestCase(ViewTestCase):
-    """This tests the edit Entries portion of the webpage."""
+class DetailsViewsTestCase(ViewTestCase):
+    """This tests to see if the details page is displayed properly."""
+    def test_details_menu(self):
+        with test_database(TEST_DB, (User, Entry)):
+            UserModelTestCase.create_users()
+            user = User.select().get()
+            Entry.create(
+                user=user,
+                title='Coding',
+                entry_date='November the twentieth',
+                time_spent='Fifteen minutes',
+                learned='Mocking a database with test_database()',
+                resources='various online things.'
+            )
+            entry = Entry.select().get()
+            rv = self.app.get('/details.html/{}'.format(entry.id))
+            self.assertIn("edit entry", rv.get_data(as_text=True).lower())
+            self.assertIn("fifteen", rv.get_data(as_text=True).lower())
+            self.assertIn("coding", rv.get_data(as_text=True).lower())
+
+
+class EditViewsTestCase(ViewTestCase):
+    """This tests to see if the edit page is displayed properly."""
     pass
 
 
