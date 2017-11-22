@@ -143,9 +143,15 @@ class UserViewsTestCase(ViewTestCase):
 
 class EntryViewsTestCase(ViewTestCase):
     """This tests to see if Entries work on the webpage."""
-    def test_entry_list(self):
-        """This tests the list of Entries for validity."""
-        pass
+    def test_new_entry_menu(self):
+        """This tests to see if the new entry menu is displayed properly."""
+        with test_database(TEST_DB, (User,)):
+            UserModelTestCase.create_users(1)
+            self.app.post('/login', data=USER_DATA)
+            rv = self.app.get('/new.html')
+            self.assertIn("add entry", rv.get_data(as_text=True).lower())
+            self.assertIn("resources", rv.get_data(as_text=True).lower())
+            self.assertIn("time spent", rv.get_data(as_text=True).lower())
 
 
 class EntryEditTestCase(ViewTestCase):

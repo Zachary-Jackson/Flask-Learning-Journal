@@ -114,12 +114,8 @@ def new():
 @app.route('/detail.html/<entry_id>')
 def detail(entry_id):
     """This lets a user closely examine an Entry."""
-    entries = models.Entry.select()
-    # This gets the list of entries switched around. The webpage displays the
-    # entry links by most recent, but the id number is by the least recent.
-    entries = entries[::-1]
     try:
-        entry = entries[int(entry_id) - 1]
+        entry = models.Entry.get(models.Entry.id == entry_id)
     except IndexError:
         abort(404)
     except ValueError:
@@ -129,10 +125,40 @@ def detail(entry_id):
 
 
 @app.route('/edit.html')
-def edit():
+@app.route('/edit.html/<entry_id>', methods=('GET', 'POST'))
+@login_required
+def edit(entry_id):
     """This is where the user can edit an Entry."""
-    form = forms.EntryForm()
-    return render_template('edit.html', form=form)
+    try:
+        entry = models.Entry.get(models.Entry.id == entry_id)
+    except IndexError:
+        abort(404)
+    except ValueError:
+        abort(404)
+    else:
+        # This gets the forms prefilled with the entry's data
+        form = forms.EntryForm(obj=entry)
+        if form.validate_on_submit():
+            models.Entry.create(user=g.user.id,
+                                title=form.title.data,
+                                entry_date=form.entry_date.data,
+                                # submit_date is used here to keep the same
+                                # order for sorting.
+                                submit_date=entry.submit_date,
+                                time_spent=form.time_spent.data,
+                                learned=form.learned.data,
+                                resources=form.resources.data
+                                )
+            entry.delete_instance()
+            return redirect(url_for('index'))
+        else:
+            return render_template('edit.html', entry=entry, form=form)
+
+
+@app.errorhandler(404)
+def not_found(error):
+    """This shows a better looking 404 page."""
+    return render_template('404.html'), 404
 
 
 if __name__ == '__main__':

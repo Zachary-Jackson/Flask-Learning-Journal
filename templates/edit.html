@@ -6,7 +6,6 @@
 <div class="container">
     <div class="edit-entry">
         <h2>Edit Entry</h2>
-        <form>
           <form method='POST' action=''>
             {{ form.hidden_tag() }}
             {{ render_field(form.title) }}
@@ -16,7 +15,7 @@
             {{ render_field(form.resources) }}
             <div class="u-full-width">
             <input type="submit" value="Publish Entry" class="button">
-            <a href="#" class="button button-secondary">Cancel</a>
+            <a href="/" class="button button-secondary">Cancel</a>
         </form>
     </div>
 </div>

@@ -52,3 +52,4 @@ def initialize():
     DATABASE.connect()
     DATABASE.create_tables([User, Entry], safe=True)
     DATABASE.close()
+    return True
