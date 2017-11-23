@@ -100,7 +100,7 @@ def logout():
     return redirect(url_for('index'))
 
 
-@app.route('/new.html', methods=('GET', 'POST'))
+@app.route('/new', methods=('GET', 'POST'))
 def new():
     """This lets the user create a new Entry."""
     form = forms.EntryForm()
@@ -114,12 +114,12 @@ def new():
                             )
         flash("Your Journal entry has been created.", "success")
         # temporary placeholder change index for /details
-        return redirect(url_for('index'))
+        return redirect(url_for('user_list'))
     return render_template('new.html', form=form)
 
 
-@app.route('/details.html')
-@app.route('/details.html/<entry_id>')
+@app.route('/details')
+@app.route('/details/<entry_id>')
 def detail(entry_id):
     """This lets a user closely examine an Entry."""
     try:
@@ -132,8 +132,8 @@ def detail(entry_id):
         return render_template('detail.html', entry=entry, user=g.user)
 
 
-@app.route('/edit.html')
-@app.route('/edit.html/<entry_id>', methods=('GET', 'POST'))
+@app.route('/entries/edit')
+@app.route('/entries/edit/<entry_id>', methods=('GET', 'POST'))
 @login_required
 def edit(entry_id):
     """This is where the user can edit an Entry."""
@@ -164,8 +164,8 @@ def edit(entry_id):
             return render_template('edit.html', entry=entry, form=form)
 
 
-@app.route('/delete/<entry_id>')
-@app.route('/delete/<entry_id>/<confirm>')
+@app.route('/entries/delete/<entry_id>')
+@app.route('/entries/delete/<entry_id>/<confirm>')
 @login_required
 def delete(entry_id, confirm=False):
     """This allows the user to delete an entry."""
@@ -179,7 +179,7 @@ def delete(entry_id, confirm=False):
         if confirm:
             entry.delete_instance()
             flash("You have deleted your journal entry.", "success")
-            return redirect(url_for('index'))
+            return redirect(url_for('user_list'))
         else:
             return render_template('delete.html', entry_id= entry_id)
 

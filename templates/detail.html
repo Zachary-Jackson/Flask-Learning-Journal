@@ -24,9 +24,10 @@
     </div>
 </div>
 <div class="edit">
-    <p><a href="/edit.html/{{ entry.id }}">Edit Entry</a></p>
+    <p><a href="/entries/edit/{{ entry.id }}">Edit Entry</a></p>
     {% if user.id == entry.user.id %}
-      <p><a href="/delete/{{ entry.id }}">Delete Entry</a></p>
+      <p><a href="/entries/delete/{{ entry.id }}">Delete Entry</a></p>
     {% endif %}
 </div>
 {% endblock %}
+entries/edit
