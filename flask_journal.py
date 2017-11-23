@@ -51,6 +51,14 @@ def index():
     return render_template('index.html', entries=entries)
 
 
+@app.route('/entries')
+@login_required
+def user_list():
+    """This shows only the user's entries."""
+    entries = models.Entry.select().where(g.user.id == models.Entry.user).limit(100)
+    return render_template('user_index.html', entries=entries)
+
+
 @app.route('/register', methods=('GET', 'POST'))
 def register():
     """This is the new user registation page."""
@@ -121,7 +129,7 @@ def detail(entry_id):
     except ValueError:
         abort(404)
     else:
-        return render_template('detail.html', entry=entry)
+        return render_template('detail.html', entry=entry, user=g.user)
 
 
 @app.route('/edit.html')

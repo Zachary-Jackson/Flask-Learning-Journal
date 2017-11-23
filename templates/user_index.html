@@ -4,17 +4,14 @@
 <div class="container">
     <div class="entry-list">
       {% if entries.count() %}
-      <article>
-        <h2> <u>All user's entries</u></h2>
-        {% if current_user.is_authenticated() %}
-        <p><a href="/entries">Click here for your entries</a></p>
-        {% endif %}
-      </article>
+        <article>
+          <h2> <u>Your entries!</u></h2>
+          <p><a href="/">Click here for all entries</a></p>
+        </article>
         {% for entry in entries %}
         <article>
             <h2><a href="{{ url_for('detail', entry_id=entry.id)}}">{{ entry.title }}</a></h2>
             <time>{{ entry.entry_date }}</time>
-            <p>Created by {{ entry.user.email }}
         </article>
         {% endfor %}
       {% endif %}

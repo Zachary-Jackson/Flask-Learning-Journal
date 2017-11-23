@@ -5,7 +5,7 @@
     <div class="entry-list single">
         <article>
             <h1>{{ entry.title }}</h1>
-            <time>{{ entry.entry_date }}</time>
+            <time>{{ entry.entry_date }} created {{ entry.submit_date.strftime('%b %m/%Y') }}</time>
             <div class="entry">
                 <h3>Time Spent: </h3>
                 <p>{{ entry.time_spent}}</p>
@@ -25,6 +25,8 @@
 </div>
 <div class="edit">
     <p><a href="/edit.html/{{ entry.id }}">Edit Entry</a></p>
-    <p><a href="/delete/{{ entry.id }}">Delete Entry</a></p>
+    {% if user.id == entry.user.id %}
+      <p><a href="/delete/{{ entry.id }}">Delete Entry</a></p>
+    {% endif %}
 </div>
 {% endblock %}
