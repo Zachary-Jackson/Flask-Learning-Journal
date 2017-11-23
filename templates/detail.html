@@ -6,6 +6,9 @@
         <article>
             <h1>{{ entry.title }}</h1>
             <time>{{ entry.entry_date }} created {{ entry.submit_date.strftime('%b %m/%Y') }}</time>
+            {% if not user.id == entry.user.id %}
+              <p>Created by {{ entry.user.email }}.</p>
+            {% endif %}
             <div class="entry">
                 <h3>Time Spent: </h3>
                 <p>{{ entry.time_spent}}</p>
@@ -24,10 +27,12 @@
     </div>
 </div>
 <div class="edit">
-    <p><a href="/entries/edit/{{ entry.id }}">Edit Entry</a></p>
     {% if user.id == entry.user.id %}
+      <a class="button" href="/"><span>Return to entries</span></a>
+      <p><a href="/entry/edit/{{ entry.id }}">Edit Entry</a></p>
       <p><a href="/entries/delete/{{ entry.id }}">Delete Entry</a></p>
+    {% else %}
+      <a class="button" href="/"><span>Return to entries</span></a>
     {% endif %}
 </div>
 {% endblock %}
-entries/edit

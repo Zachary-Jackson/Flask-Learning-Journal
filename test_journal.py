@@ -148,7 +148,7 @@ class EntryViewsTestCase(ViewTestCase):
         with test_database(TEST_DB, (User,)):
             UserModelTestCase.create_users(1)
             self.app.post('/login', data=USER_DATA)
-            rv = self.app.get('/new.html')
+            rv = self.app.get('/entry')
             self.assertIn("add entry", rv.get_data(as_text=True).lower())
             self.assertIn("resources", rv.get_data(as_text=True).lower())
             self.assertIn("time spent", rv.get_data(as_text=True).lower())
@@ -169,7 +169,7 @@ class DetailsViewsTestCase(ViewTestCase):
                 resources='various online things.'
             )
             entry = Entry.select().get()
-            rv = self.app.get('/details.html/{}'.format(entry.id))
+            rv = self.app.get('/details/{}'.format(entry.id))
             self.assertIn("edit entry", rv.get_data(as_text=True).lower())
             self.assertIn("fifteen", rv.get_data(as_text=True).lower())
             self.assertIn("coding", rv.get_data(as_text=True).lower())

@@ -17,6 +17,10 @@
             <p>Created by {{ entry.user.email }}
         </article>
         {% endfor %}
+      {% else %}
+        <article>
+          <h2> <u>There are currently no entries!</u></h2>
+        </article>
       {% endif %}
     </div>
 </div>

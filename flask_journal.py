@@ -55,7 +55,8 @@ def index():
 @login_required
 def user_list():
     """This shows only the user's entries."""
-    entries = models.Entry.select().where(g.user.id == models.Entry.user).limit(100)
+    entries = models.Entry.select().where(
+                g.user.id == models.Entry.user).limit(100)
     return render_template('user_index.html', entries=entries)
 
 
@@ -100,7 +101,7 @@ def logout():
     return redirect(url_for('index'))
 
 
-@app.route('/new', methods=('GET', 'POST'))
+@app.route('/entry', methods=('GET', 'POST'))
 def new():
     """This lets the user create a new Entry."""
     form = forms.EntryForm()
@@ -132,8 +133,8 @@ def detail(entry_id):
         return render_template('detail.html', entry=entry, user=g.user)
 
 
-@app.route('/entries/edit')
-@app.route('/entries/edit/<entry_id>', methods=('GET', 'POST'))
+@app.route('/entry/edit')
+@app.route('/entry/edit/<entry_id>', methods=('GET', 'POST'))
 @login_required
 def edit(entry_id):
     """This is where the user can edit an Entry."""
@@ -181,7 +182,7 @@ def delete(entry_id, confirm=False):
             flash("You have deleted your journal entry.", "success")
             return redirect(url_for('user_list'))
         else:
-            return render_template('delete.html', entry_id= entry_id)
+            return render_template('delete.html', entry_id = entry_id)
 
 
 @app.errorhandler(404)
